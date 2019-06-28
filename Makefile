@@ -33,10 +33,10 @@ byte: $(PROGNAME).byte
 
 all: byte opt
 
-$(PROGNAME).byte: $(DEPEND) $(OBJS)
+$(PROGNAME).byte: $(DEPEND) $(OBJS) .depend
 	$(OCAMLC) $(OCAMLFLAGS) -o $@ $(OBJS)
 
-$(PROGNAME).opt: $(DEPEND) $(subst .cmo,.cmx,$(OBJS))
+$(PROGNAME).opt: $(DEPEND) $(subst .cmo,.cmx,$(OBJS)) .depend
 	$(OCAMLOPT) $(OCAMLOPTFLAGS) -o $@ $(subst .cmo,.cmx,$(OBJS))
 
 run: $(PROGNAME)
@@ -81,7 +81,7 @@ clean:
 		flexer.ml .depend
 
 # Dependencies
-depend:: $(DEPEND)
+.depend: $(DEPEND)
 	$(OCAMLDEP) $(INCLUDES) *.mli *.ml > .depend
 
 -include .depend
