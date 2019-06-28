@@ -6,10 +6,16 @@ open Why3api
    [Whyconf.prover_by_id config "alt-ergo"]
    but this function doesn't seem to exist in version 0.86. *)
 let find_prover config name =
-  let prover = Why3.Stdlib.Mstr.find name @@
-                 Why3.Whyconf.get_prover_shortcuts config
-  in
-  Why3.Whyconf.Mprover.find prover @@ Why3.Whyconf.get_provers config
+  try
+    let prover = Why3.Stdlib.Mstr.find name @@
+                  Why3.Whyconf.get_prover_shortcuts config
+    in
+    Why3.Whyconf.Mprover.find prover @@ Why3.Whyconf.get_provers config
+  with Not_found ->
+    begin
+      print_endline ("Error: could not load prover '" ^ name ^ "'");
+      exit (-1)
+    end
 
 (* Try to prove task [task] using theorem prover named [prover]. *)
 let prove_task prover ?(timelimit=10) ?(memlimit=4000) task =
