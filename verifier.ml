@@ -228,7 +228,13 @@ let simplify_task task =
   in
   tt_and (List.map simplify tasks) |> reduce_task_tree
 
-let prover_name_list = ["alt-ergo"; "cvc3"; "cvc4"; "z3"; "eprover"]
+let prover_name_list =
+  try begin
+    Sys.getenv "VERICUDA_PROVERS" |> String.split_on_char ','
+    |> List.map String.trim
+    |> List.filter (fun x -> x <> "")
+  end
+  with Not_found -> []
 
 let kill_prover_calls pcs =
   List.iter
@@ -246,6 +252,11 @@ exception Finished
 let try_prove_task ?(provers=prover_name_list)
                    ?(timelimit=(!Options.timelimit))
                    ?(memlimit=(!Options.memlimit)) task =
+  if prover_name_list = [] then begin
+    print_endline "Pass a comma-separated list of provers with env-var VERICUDA_PROVERS, example VERICUDA_PROVERS=alt-ergo";
+    exit (-1)
+  end;
+
   let pcs = List.map
               (fun name ->
                let pcall = prove_task ~timelimit ~memlimit name task () in
