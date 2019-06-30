@@ -41,7 +41,7 @@ ENV VERICUDA_PROVERS=alt-ergo,z3
 
 WORKDIR /VeriCUDA
 
-CMD ./test.sh
+#CMD ./test.sh
 
 #  why3 config --detect-provers && \
 #  echo [main] >> ~/.why3.conf && \

@@ -59,6 +59,9 @@ docker-build:
 docker-run:
 	$(DOCKER) run -it --rm vericuda
 
+docker-test:
+	$(DOCKER) run -it --rm vericuda ./test.sh
+
 # Common rules
 .SUFFIXES: .ml .mli .cmo .cmi .cmx
 
