@@ -1,3 +1,4 @@
+DOCKER=docker
 OCAMLC=ocamlc
 OCAMLOPT=ocamlopt
 OCAMLDEP=ocamldep
@@ -51,6 +52,12 @@ wc:
 		polynomial.ml formula.ml why3util.ml vc.ml vcg.ml	\
 		vctrans.ml print.ml taskgen.ml verifier.ml		\
 		interactive.ml main.ml
+
+docker-build:
+	$(DOCKER) build -f docker/Dockerfile -t vericuda .
+
+docker-run:
+	$(DOCKER) run -it --rm vericuda
 
 # Common rules
 .SUFFIXES: .ml .mli .cmo .cmi .cmx
